@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "make-your-game",
+  "description": "A tetris game for k/j",
+  "version": "1.0.0",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://01.kood.tech/git/mkuzmina/make-your-game.git"
+  },
+  "keywords": [
+    "tetris",
+    "game"
+  ],
+  "author": "Marco Kuzmina",
+  "license": "UNLICENSED"
+}
