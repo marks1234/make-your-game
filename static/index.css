@@ -1,40 +1,72 @@
+#animateBox {
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  position: absolute;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
 }
 body {
-  background-color: #f0f0f0;
+  /* background-color: #000000; */
+  overflow: hidden;
+  /* background-color: #f0f0f0; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 #game-container {
+  margin-left: -250px;
   display: flex;
   flex-direction: row;
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
   width: 100vw;
   height: 100vh;
-  background-color: #ffffff;
-  border: 5px solid #000000;
 }
+
 #sidebar {
-  width: 20%; /* Sidebar takes up 20% of the view width */
-  background-color: #e0e0e0;
+  width: 15%; /* Sidebar takes up 20% of the view width */
+  background-color: #d32f2f; /* Christmas red */
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   padding: 1%;
+  border: 3px solid #0b8043; /* Dark green border */
 }
-#gameboard {
-  width: 80%; /* Gameboard takes up the remaining 80% of the view width */
-  background-color: #000000;
-}
+
 .stats {
   width: 100%;
   margin-bottom: 2%;
   padding: 10px;
-  background-color: #cccccc;
+  background-color: #fff176; /* Light yellow for contrast */
   text-align: center;
   font-size: 1.5vw; /* Responsive font size */
+  border: 2px solid #0b8043; /* Dark green border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  color: #0b8043; /* Dark green text for readability and theme */
+}
+
+#gameboard {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid #000000;
+}
+
+#gameboard > div {
+  display: flex;
+}
+
+.box {
+  width: 5vh; /* Adjust as needed */
+  height: 5vh; /* Adjust as needed */
+  background-color: #d3d3d3; /* Light gray background */
+  border: 2px solid #a9a9a9; /* Darker gray border */
+  box-sizing: border-box;
 }

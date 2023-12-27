@@ -16,5 +16,8 @@
     "game"
   ],
   "author": "Marco Kuzmina",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
 }
