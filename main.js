@@ -1,6 +1,4 @@
-let box = document.getElementById("animateBox");
-let pos = 0;
-console.log("updates");
+console.log("updated");
 
 const gameBoard = document.getElementById("gameboard");
 /** @type {Map<number, Map<number, HTMLDivElement>>} */
@@ -19,23 +17,9 @@ for (y = 0; y < 20; y++) {
   gameBoard.appendChild(xWrapper);
 }
 
-function flipMap(originalMap) {
-  const flippedMap = new Map();
-
-  originalMap.forEach((innerMap, y) => {
-    innerMap.forEach((value, x) => {
-      if (!flippedMap.has(x)) {
-        flippedMap.set(x, new Map());
-      }
-      flippedMap.get(x).set(y, value);
-    });
-  });
-
-  return flippedMap;
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
 }
-
-// Usage
-const flippedGameMap = flipMap;
 
 class GameBoard {
   #plottedPieces = {
@@ -49,7 +33,8 @@ class GameBoard {
   constructor(board) {
     /** @type {Map<number, Map<number, HTMLDivElement>>} */
     this.board = board;
-    this.piece;
+    /** @type {Object<number, Array<number>} */
+    this.piece = {};
   }
 
   boardClear() {
@@ -59,9 +44,94 @@ class GameBoard {
       });
     });
   }
-  paintPiece(nameOfPiece) {
-    const pieceLocations = this.#plottedPieces[nameOfPiece];
-    for (const [y, value] of Object.entries(pieceLocations)) {
+
+  pieceRotateRight() {
+    console.log(this.piece);
+  }
+
+  clearSquare(x, y) {
+    this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
+      "#d3d3d3";
+  }
+  pieceClear() {
+    for (const [y, value] of Object.entries(this.piece))
+      for (let x of value) {
+        this.clearSquare(x, y);
+      }
+  }
+
+  pieceMoveDown() {
+    if (!isEmpty(this.piece)) {
+      this.pieceClear();
+      const pieceStore = {};
+
+      for (const [y, value] of Object.entries(this.piece))
+        pieceStore[parseInt(y) + 1] = value;
+
+      this.piece = pieceStore;
+      this.piecePlace();
+    } else {
+      try {
+        throw Error("Can't move an empty piece!");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  pieceMoveLeft() {
+    if (!isEmpty(this.piece)) {
+      this.pieceClear();
+      const pieceStore = {};
+
+      for (const [y, value] of Object.entries(this.piece)) {
+        const newValue = [];
+        for (let x of value) newValue.push(parseInt(x) - 1);
+        pieceStore[parseInt(y)] = newValue;
+      }
+
+      this.piece = pieceStore;
+      this.piecePlace();
+    } else {
+      try {
+        throw Error("Can't move an empty piece!");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+  pieceMoveRight() {
+    if (!isEmpty(this.piece)) {
+      this.pieceClear();
+      const pieceStore = {};
+
+      for (const [y, value] of Object.entries(this.piece)) {
+        const newValue = [];
+        for (let x of value) newValue.push(parseInt(x) + 1);
+        pieceStore[parseInt(y)] = newValue;
+      }
+
+      this.piece = pieceStore;
+      this.piecePlace();
+    } else {
+      try {
+        throw Error("Can't move an empty piece!");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+  pieceDelete() {
+    this.pieceClear();
+    this.piece = {};
+  }
+  piecePlace(nameOfPiece) {
+    if (isEmpty(this.piece)) {
+      const pieceLocations = this.#plottedPieces[nameOfPiece];
+      this.piece = pieceLocations;
+    }
+
+    for (const [y, value] of Object.entries(this.piece)) {
       for (let x of value) {
         this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
           "black";
@@ -72,12 +142,19 @@ class GameBoard {
 
 const boardController = new GameBoard(gameMap);
 
-boardController.paintPiece("T");
+boardController.piecePlace("T");
+// boardController.pieceDelete();
+boardController.pieceMoveDown();
+boardController.pieceMoveLeft();
+boardController.pieceMoveLeft();
+// boardController.pieceRotateRight();
 
-// const letters = ["T", "I", "L", "J", "S", "Z"];
-// letters.forEach((key, index) => {
-//   setTimeout(() => {
-//     boardController.boardClear();
-//     boardController.paintPiece(key);
-//   }, 1000 * (index + 1)); // Delay increases with each iteration
-// });
+const letters = ["T", "I", "L", "J", "S", "Z"];
+console.log(letters);
+letters.forEach((key, index) => {
+  setTimeout(() => {
+    // boardController.boardClear();
+    // boardController.paintPiece(key);
+    boardController.pieceMoveDown();
+  }, 1000 * (index + 1)); // Delay increases with each iteration
+});
