@@ -56,7 +56,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 2px solid #000000;
+  border: 5px solid #147878; /* Teal color for the border */
+  background-color: #e7f5f6; /* Light icy blue for background */
 }
 
 #gameboard > div {
@@ -66,7 +67,7 @@ body {
 .box {
   width: 5vh; /* Adjust as needed */
   height: 5vh; /* Adjust as needed */
-  background-color: #d3d3d3; /* Light gray background */
-  border: 2px solid #a9a9a9; /* Darker gray border */
+  background-color: white; /* Dark slate color for boxes */
+  border: 2px solid #db4141;
   box-sizing: border-box;
 }

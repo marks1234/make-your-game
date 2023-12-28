@@ -23,6 +23,7 @@ function isEmpty(obj) {
 
 class GameBoard {
   #plottedPieces = {
+    O: { 0: [4, 5], 1: [4, 5] },
     T: { 0: [4], 1: [3, 4, 5] },
     I: { 1: [3, 4, 5, 6] },
     L: { 0: [5], 1: [3, 4, 5] },
@@ -30,11 +31,402 @@ class GameBoard {
     S: { 0: [4, 5], 1: [3, 4] },
     Z: { 0: [3, 4], 1: [4, 5] },
   };
+  #colors = {
+    O: "yellow",
+    T: "#9d0d2f",
+    I: "#3e0d1e",
+    L: "b4204a",
+    J: "#e87d87",
+    S: "#FFD700",
+    Z: "#eca59d",
+  };
+
+  #reverseRotationMatrix = {
+    O: [
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+    ],
+    T: [
+      [
+        [1, 1],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      [
+        [1, 1],
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    I: [
+      [
+        [-1, 2],
+        [0, 1],
+        [1, 0],
+        [2, -1],
+      ],
+      [
+        [2, 1],
+        [1, 0],
+        [0, -1],
+        [-1, -2],
+      ],
+      [
+        [-2, 1],
+        [-1, 0],
+        [0, -1],
+        [1, -2],
+      ],
+      [
+        [1, 2],
+        [0, 0],
+        [-1, 1],
+        [-2, -1],
+      ],
+    ],
+    L: [
+      [
+        [2, 0],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [-1, -1],
+        [0, -2],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [-2, 0],
+      ],
+      [
+        [0, 2],
+        [1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    J: [
+      [
+        [0, 2],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [2, 0],
+        [0, 0],
+        [-1, -1],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [0, -2],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [-2, 0],
+        [-1, -1],
+      ],
+    ],
+    S: [
+      [
+        [1, 1],
+        [2, 0],
+        [-1, 1],
+        [0, 0],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [1, -1],
+        [0, -2],
+      ],
+      [
+        [0, 0],
+        [1, -1],
+        [-2, 0],
+        [-1, -1],
+      ],
+      [
+        [0, 2],
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    Z: [
+      //1
+      [
+        [0, 2],
+        [1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      //2
+      [
+        [2, 0],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      //3
+      [
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+        [0, -2],
+      ],
+      //4
+      [
+        [-1, 1],
+        [-2, 0],
+        [0, 0],
+        [1, 1],
+      ],
+    ],
+  };
+
+  #rotationMatrix = {
+    O: [
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
+    ],
+    T: [
+      [
+        [1, 1],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      [
+        [1, 1],
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    I: [
+      [
+        [-1, 2],
+        [0, 1],
+        [1, 0],
+        [2, -1],
+      ],
+      [
+        [2, 1],
+        [1, 0],
+        [0, -1],
+        [-1, -2],
+      ],
+      [
+        [-2, 1],
+        [-1, 0],
+        [0, -1],
+        [1, -2],
+      ],
+      [
+        [1, 2],
+        [0, 0],
+        [-1, 1],
+        [-2, -1],
+      ],
+    ],
+    L: [
+      [
+        [2, 0],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [-1, -1],
+        [0, -2],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [-2, 0],
+      ],
+      [
+        [0, 2],
+        [1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    J: [
+      [
+        [0, 2],
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [1, 1],
+        [2, 0],
+        [0, 0],
+        [-1, -1],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [1, -1],
+        [0, -2],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [-2, 0],
+        [-1, -1],
+      ],
+    ],
+    S: [
+      [
+        [1, 1],
+        [2, 0],
+        [-1, 1],
+        [0, 0],
+      ],
+      [
+        [1, 1],
+        [0, 0],
+        [1, -1],
+        [0, -2],
+      ],
+      [
+        [0, 0],
+        [1, -1],
+        [-2, 0],
+        [-1, -1],
+      ],
+      [
+        [0, 2],
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+      ],
+    ],
+    Z: [
+      [
+        [0, 2],
+        [1, 1],
+        [0, 0],
+        [1, -1],
+      ],
+      [
+        [2, 0],
+        [0, 0],
+        [1, -1],
+        [-1, -1],
+      ],
+      [
+        [-1, 1],
+        [0, 0],
+        [-1, -1],
+        [0, -2],
+      ],
+      [
+        [1, 1],
+        [-1, 1],
+        [0, 0],
+        [-2, 0],
+      ],
+    ],
+  };
+
   constructor(board) {
     /** @type {Map<number, Map<number, HTMLDivElement>>} */
     this.board = board;
     /** @type {Object<number, Array<number>} */
     this.piece = {};
+    this.pieceType = "";
+    this.pieceLastRotation = {};
+    this.pieceRotation = 0;
+
+    this.left = 0;
+    this.right = 9;
+    this.bottom = 19;
   }
 
   boardClear() {
@@ -45,13 +437,103 @@ class GameBoard {
     });
   }
 
+  pieceCheckCollision() {}
+
   pieceRotateRight() {
+    const sortingCallback = ([y1, x1], [y2, x2]) => {
+      if (y1 == y2) {
+        return x1 - x2;
+      } else {
+        return y1 - y2;
+      }
+    };
+
+    this.pieceClear();
+    const nextRotation =
+      this.#rotationMatrix[this.pieceType][this.pieceRotation];
+    console.log(this.pieceRotation);
+    /** @type {Object<number, Array<number>} */
+    const pieceStore = {};
+    let countPiece = 0;
+    const matrixStore = [];
+    for (const [y, value] of Object.entries(this.piece).sort(sortingCallback)) {
+      for (let x of value) {
+        matrixStore.push([
+          parseInt(y) + nextRotation[countPiece][0],
+          parseInt(x) + nextRotation[countPiece][1],
+        ]);
+        countPiece++;
+      }
+    }
+
+    matrixStore.sort(sortingCallback).forEach((val, index) => {
+      if (pieceStore[val[0]] == undefined) {
+        pieceStore[val[0]] = [];
+      }
+      pieceStore[val[0]].push(val[1]);
+    });
+    this.pieceLastRotation = this.piece;
+    this.piece = pieceStore;
+    this.pieceRotation++;
+    if (this.pieceRotation >= 4) {
+      this.pieceRotation = 0;
+    }
+
+    this.piecePlace();
+  }
+
+  pieceRotateLeft() {
+    this.pieceRotation--;
+    if (this.pieceRotation < 0) {
+      this.pieceRotation = 3;
+    }
+    const sortingCallback = ([y1, x1], [y2, x2]) => {
+      if (y1 == y2) {
+        return x1 - x2;
+      } else {
+        return y1 - y2;
+      }
+    };
+
+    this.pieceClear();
+
+    const nextRotation =
+      this.#reverseRotationMatrix[this.pieceType][this.pieceRotation];
     console.log(this.piece);
+    console.log(this.pieceRotation);
+    /** @type {Object<number, Array<number>} */
+    const pieceStore = {};
+    let countPiece = 0;
+    const matrixStore = [];
+    for (const [y, value] of Object.entries(this.piece).sort(sortingCallback)) {
+      for (let x of value) {
+        matrixStore.push([
+          parseInt(y) - nextRotation[countPiece][0],
+          parseInt(x) - nextRotation[countPiece][1],
+        ]);
+        countPiece++;
+      }
+    }
+    console.log(matrixStore);
+    matrixStore.sort(sortingCallback).forEach((val, index) => {
+      if (pieceStore[val[0]] == undefined) {
+        pieceStore[val[0]] = [];
+      }
+      pieceStore[val[0]].push(val[1]);
+    });
+
+    this.piece = pieceStore;
+
+    this.piecePlace();
   }
 
   clearSquare(x, y) {
-    this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
-      "#d3d3d3";
+    try {
+      this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
+        "white";
+    } catch (err) {
+      console.error(err);
+    }
   }
   pieceClear() {
     for (const [y, value] of Object.entries(this.piece))
@@ -60,6 +542,28 @@ class GameBoard {
       }
   }
 
+  freeSpaceDown() {
+    let biggestY = 0;
+    for (const [y, value] of Object.entries(this.piece)) y;
+
+    return biggestY < this.right;
+  }
+  freeSpaceRight() {
+    let biggestX = 0;
+    for (const [y, value] of Object.entries(this.piece))
+      for (let x of value) {
+        if (x > biggestX) biggestX = x;
+      }
+    return biggestX < this.right;
+  }
+  freeSpaceLeft() {
+    let smallestX = 19;
+    for (const [y, value] of Object.entries(this.piece))
+      for (let x of value) {
+        if (x < smallestX) smallestX = x;
+      }
+    return smallestX > this.left;
+  }
   pieceMoveDown() {
     if (!isEmpty(this.piece)) {
       this.pieceClear();
@@ -80,81 +584,116 @@ class GameBoard {
   }
 
   pieceMoveLeft() {
-    if (!isEmpty(this.piece)) {
-      this.pieceClear();
-      const pieceStore = {};
+    if (this.freeSpaceLeft())
+      if (!isEmpty(this.piece)) {
+        this.pieceClear();
+        const pieceStore = {};
 
-      for (const [y, value] of Object.entries(this.piece)) {
-        const newValue = [];
-        for (let x of value) newValue.push(parseInt(x) - 1);
-        pieceStore[parseInt(y)] = newValue;
-      }
+        for (const [y, value] of Object.entries(this.piece)) {
+          const newValue = [];
+          for (let x of value) newValue.push(parseInt(x) - 1);
+          pieceStore[parseInt(y)] = newValue;
+        }
 
-      this.piece = pieceStore;
-      this.piecePlace();
-    } else {
-      try {
-        throw Error("Can't move an empty piece!");
-      } catch (err) {
-        console.error(err);
+        this.piece = pieceStore;
+        this.piecePlace();
+      } else {
+        try {
+          throw Error("Can't move an empty piece!");
+        } catch (err) {
+          console.error(err);
+        }
       }
-    }
   }
   pieceMoveRight() {
-    if (!isEmpty(this.piece)) {
-      this.pieceClear();
-      const pieceStore = {};
+    if (this.freeSpaceRight())
+      if (!isEmpty(this.piece)) {
+        this.pieceClear();
+        const pieceStore = {};
 
-      for (const [y, value] of Object.entries(this.piece)) {
-        const newValue = [];
-        for (let x of value) newValue.push(parseInt(x) + 1);
-        pieceStore[parseInt(y)] = newValue;
-      }
+        for (const [y, value] of Object.entries(this.piece)) {
+          const newValue = [];
+          for (let x of value) newValue.push(parseInt(x) + 1);
+          pieceStore[parseInt(y)] = newValue;
+        }
 
-      this.piece = pieceStore;
-      this.piecePlace();
-    } else {
-      try {
-        throw Error("Can't move an empty piece!");
-      } catch (err) {
-        console.error(err);
+        this.piece = pieceStore;
+        this.piecePlace();
+      } else {
+        try {
+          throw Error("Can't move an empty piece!");
+        } catch (err) {
+          console.error(err);
+        }
       }
-    }
   }
   pieceDelete() {
     this.pieceClear();
     this.piece = {};
+    this.pieceType = "";
+    this.pieceRotation = 0;
+  }
+
+  pieceReplace(nameOfPiece) {
+    this.pieceDelete();
+    this.piecePlace(nameOfPiece);
   }
   piecePlace(nameOfPiece) {
     if (isEmpty(this.piece)) {
+      this.pieceType = nameOfPiece;
       const pieceLocations = this.#plottedPieces[nameOfPiece];
       this.piece = pieceLocations;
     }
 
     for (const [y, value] of Object.entries(this.piece)) {
       for (let x of value) {
-        this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
-          "black";
+        try {
+          this.board.get(parseInt(y)).get(parseInt(x)).style.backgroundColor =
+            this.#colors[this.pieceType];
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
   }
 }
 
-const boardController = new GameBoard(gameMap);
+document.addEventListener("DOMContentLoaded", () => {
+  var gameBoard = new GameBoard(gameMap);
+  const letters = ["O", "T", "I", "L", "J", "S", "Z"];
 
-boardController.piecePlace("T");
-// boardController.pieceDelete();
-boardController.pieceMoveDown();
-boardController.pieceMoveLeft();
-boardController.pieceMoveLeft();
-// boardController.pieceRotateRight();
+  // Initially place a "T" piece
+  gameBoard.piecePlace("Z");
 
-const letters = ["T", "I", "L", "J", "S", "Z"];
-console.log(letters);
-letters.forEach((key, index) => {
-  setTimeout(() => {
-    // boardController.boardClear();
-    // boardController.paintPiece(key);
-    boardController.pieceMoveDown();
-  }, 1000 * (index + 1)); // Delay increases with each iteration
+  let count = 0;
+  // Event listener for keyboard events
+  document.addEventListener("keydown", (event) => {
+    // if (g)
+    if (event.key === "r") {
+      event.preventDefault();
+      gameBoard.pieceReplace(letters[count]);
+      count++;
+      if (count > letters.length - 1) count = 0;
+    }
+    if (event.key === "q") {
+      event.preventDefault();
+      gameBoard.pieceRotateLeft();
+    }
+    if (event.key === "e") {
+      event.preventDefault();
+      gameBoard.pieceRotateRight();
+    }
+    if (event.key === "s") {
+      event.preventDefault();
+      gameBoard.pieceMoveDown();
+    }
+    if (event.key === "a") {
+      event.preventDefault();
+      gameBoard.pieceMoveLeft();
+    }
+    if (event.key === "d") {
+      event.preventDefault();
+      gameBoard.pieceMoveRight();
+    }
+  });
 });
