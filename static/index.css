@@ -1,10 +1,3 @@
-#animateBox {
-  width: 50px;
-  height: 50px;
-  background-color: red;
-  position: absolute;
-}
-
 html,
 body {
   height: 100%;
@@ -19,7 +12,6 @@ body {
   align-items: center;
 }
 #game-container {
-  margin-left: -250px;
   display: flex;
   flex-direction: row;
   justify-content: center; /* Center children horizontally */
@@ -28,27 +20,34 @@ body {
   height: 100vh;
 }
 
+#dummy {
+  width: 33vw;
+}
+
 #sidebar {
-  width: 15%; /* Sidebar takes up 20% of the view width */
-  background-color: #d32f2f; /* Christmas red */
+  width: 33vw; /* Sidebar takes up 20% of the view width */
+  /* Christmas red */
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  padding: 1%;
-  border: 3px solid #0b8043; /* Dark green border */
 }
 
 .stats {
-  width: 100%;
-  margin-bottom: 2%;
-  padding: 10px;
-  background-color: #fff176; /* Light yellow for contrast */
+  width: 25%;
   text-align: center;
-  font-size: 1.5vw; /* Responsive font size */
-  border: 2px solid #0b8043; /* Dark green border */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-  color: #0b8043; /* Dark green text for readability and theme */
+  font-size: 2vw;
+  font-weight: 550;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 50px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+}
+.stats-text {
+  font-weight: 30;
+}
+#clears {
+  font-size: 125px;
 }
 
 #gameboard {
@@ -56,7 +55,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 5px solid #147878; /* Teal color for the border */
+  border: 5px solid #bfae6b; /* Teal color for the border */
   background-color: #e7f5f6; /* Light icy blue for background */
 }
 
@@ -68,6 +67,6 @@ body {
   width: 5vh; /* Adjust as needed */
   height: 5vh; /* Adjust as needed */
   background-color: white; /* Dark slate color for boxes */
-  border: 2px solid #db4141;
+  border: 2px solid #bfae6b;
   box-sizing: border-box;
 }

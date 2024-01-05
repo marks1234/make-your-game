@@ -56,7 +56,7 @@ const requestListener = async function (req, res) {
     );
     return;
   }
-  if (fileType == "jpg") {
+  if (fileType == "jpg" || fileType.toLowerCase() == "png") {
     try {
       res.writeHead(200, { "Content-Type": "image/jpeg" });
 
@@ -94,6 +94,7 @@ const requestListener = async function (req, res) {
     res.writeHead(200);
     res.end(data);
   } catch (err) {
+    console.log(fileType);
     console.error(err);
     res.writeHead(501, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ error: err.message }));
