@@ -637,6 +637,7 @@ export default class GameBoard {
       this.piece = pieceLocations;
     }
     if (this.#pieceCheckCollisionPiece()) {
+      console.log("two pieces printed at a time");
       this.gameEnd = true;
       return;
     }

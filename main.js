@@ -33,34 +33,57 @@ document.addEventListener("DOMContentLoaded", () => {
     boardWidth,
     boardBackgroundColor
   );
-  const letters = ["O", "T", "I", "L", "J", "S", "Z"];
-
-  gameBoard.pieceDraw("S");
 
   // Initially place a "T" piece
   gameBoard.pieceDraw(gameBoard.getRandomPiece());
+
+  let keysPressed = {
+    ArrowDown: false,
+    ArrowRight: false,
+    ArrowLeft: false,
+    q: false,
+    w: false,
+  };
+
   let multiplier = 1;
   let delay = 750 * multiplier;
   let animationId = 0;
   let timeoutId = 0;
-  const callbackLoop = () => {
-    if (!gameBoard.freeSpaceDown()) {
-      gameBoard.piecePlace();
-    }
-
-    gameBoard.pieceMoveDown();
-
-    if (!gameBoard.gameEnd) {
-      animationId = requestAnimationFrame(animate);
-    } else cancelAnimationFrame(animationId);
-  };
   const animate = (timeStamp) => {
+    // switch (true) {
+    //   case keysPressed["ArrowDown"]:
+    //     break;
+    //   case keysPressed["ArrowRight"]:
+    //     break;
+    //   case keysPressed["ArrowLeft"]:
+    //     break;
+    //   case keysPressed["q"]:
+    //     gameBoard.pieceRotateLeft();
+    //     break;
+    //   case keysPressed["w"]:
+    //     gameBoard.pieceRotateRight();
+    //     break;
+    // }
+
+    timeoutId = setTimeout(callbackLoop, delay);
+  };
+  const callbackLoop = () => {
     const linesClearedHtml = document.getElementById("clears");
     const levelHtml = document.getElementById("levels");
 
     linesClearedHtml.innerText = `${gameBoard.linesCleared}`;
     levelHtml.innerText = `${gameBoard.level}`;
-    timeoutId = setTimeout(callbackLoop, delay - levelDelay);
+    if (!gameBoard.freeSpaceDown()) {
+      gameBoard.piecePlace();
+    }
+
+    gameBoard.pieceMoveDown();
+    console.log(!gameBoard.gameEnd);
+    console.log(animationId);
+    console.log(timeoutId);
+    if (!gameBoard.gameEnd) {
+      animationId = requestAnimationFrame(animate);
+    } else cancelAnimationFrame(animationId);
   };
 
   let count = 0;
@@ -71,47 +94,64 @@ document.addEventListener("DOMContentLoaded", () => {
   //     multiplier = 1;
   //   }
   // });
+  document.addEventListener("keyup", (event) => {
+    if (event.code === "q") {
+      event.preventDefault();
+      keysPressed["q"] = false;
+    }
+    if (event.code === "w") {
+      event.preventDefault();
+      keysPressed["w"] = false;
+    }
+  });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "q") {
-      event.preventDefault();
-      gameBoard.pieceRotateLeft();
-    }
-    if (event.key === "w") {
-      event.preventDefault();
-      gameBoard.pieceRotateRight();
-    }
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (!gameBoard.freeSpaceDown()) {
-        gameBoard.piecePlace();
+    if (!gameBoard.gameEnd) {
+      if (event.key === "q") {
+        event.preventDefault();
+        keysPressed["q"] = true;
+        gameBoard.pieceRotateLeft();
       }
-      if (animationId == 0) {
-        animationId = requestAnimationFrame(animate);
-      } else {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(callbackLoop, delay);
+      if (event.key === "w") {
+        event.preventDefault();
+        keysPressed["w"] = true;
+        gameBoard.pieceRotateRight();
       }
-      gameBoard.pieceMoveDown();
-    }
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      gameBoard.pieceMoveLeft();
-    }
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      gameBoard.pieceMoveRight();
-    }
-    if (event.key === "r") {
-      count++;
-      if (count > letters.length - 1) count = 0;
-      event.preventDefault();
-      gameBoard.pieceReplace(letters[count]);
-    }
-    if (event.key === "f") {
-      count--;
-      if (count < 0) count = letters.length - 1;
-      event.preventDefault();
-      gameBoard.pieceReplace(letters[count]);
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        if (!gameBoard.freeSpaceDown()) {
+          gameBoard.piecePlace();
+        }
+        if (animationId == 0) {
+          gameBoard.gameEnd = false;
+          animationId = requestAnimationFrame(animate);
+        } else {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(callbackLoop, delay);
+        }
+        gameBoard.pieceMoveDown();
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        gameBoard.pieceMoveLeft();
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        gameBoard.pieceMoveRight();
+      }
+      // CODE TO ENTER GOD MODE AND CHOOSE WHATEVER PIECE YOU WANT
+      // const letters = ["O", "T", "I", "L", "J", "S", "Z"];
+      // if (event.key === "r") {
+      //   count++;
+      //   if (count > letters.length - 1) count = 0;
+      //   event.preventDefault();
+      //   gameBoard.pieceReplace(letters[count]);
+      // }
+      // if (event.key === "f") {
+      //   count--;
+      //   if (count < 0) count = letters.length - 1;
+      //   event.preventDefault();
+      //   gameBoard.pieceReplace(letters[count]);
+      // }
     }
   });
 });
