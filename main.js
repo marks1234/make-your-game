@@ -80,8 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleVisibilityChange() {
     if (!gameBoard.gameStart) {
-      console.log("returned");
-      console.log("!gameBoard.gameStart", !gameBoard.gameStart);
       return;
     }
     console.log("didn't return");
@@ -91,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(timeoutId);
       animationId = 0;
     } else {
-      // Page is visible, resume animations
       unPauseTime();
       animationId = requestAnimationFrame(animate);
     }
