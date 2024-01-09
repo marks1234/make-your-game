@@ -636,6 +636,15 @@ export default class GameBoard {
     this.lastRandomNumber = num;
     return Object.keys(this.#colors)[num];
   }
+
+  #showGameEndScreen() {
+    // const gameBoard2 = document.getElementById("gameboard");
+    const gameEnd = document.getElementById("game-end");
+    // gameBoard2.style.display = "none";
+    gameEnd.style.display = "flex";
+    gameEnd.style.position = "absolute";
+  }
+
   pieceDraw(nameOfPiece) {
     if (isEmpty(this.piece)) {
       this.pieceType = nameOfPiece;
@@ -645,6 +654,7 @@ export default class GameBoard {
     if (this.#pieceCheckCollisionPiece()) {
       console.log("two pieces printed at a time");
       this.gameEnd = true;
+      this.#showGameEndScreen();
       return;
     }
 

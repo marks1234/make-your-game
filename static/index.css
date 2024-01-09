@@ -71,3 +71,17 @@ body {
   border: 2px solid #bfae6b;
   box-sizing: border-box;
 }
+
+#game-end {
+  width: 300px;
+  text-align: center;
+  display: none;
+  flex-direction: column;
+
+  background-color: white;
+  color: #dac264;
+  border: 2px #dac264 solid;
+  border-radius: 25px;
+  padding: 20px;
+  cursor: pointer;
+}
