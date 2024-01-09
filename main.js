@@ -1,5 +1,6 @@
 import GameBoard from "./gameBoard.js";
 import * as boardSettings from "./boardSettings.js";
+import { startTimer, stopTimer, ELAPSEDTIME } from "./timer.js";
 
 console.log("updated");
 
@@ -50,23 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let animationId = 0;
   let timeoutId = 0;
   const animate = (timeStamp) => {
-    // switch (true) {
-    //   case keysPressed["ArrowDown"]:
-    //     break;
-    //   case keysPressed["ArrowRight"]:
-    //     break;
-    //   case keysPressed["ArrowLeft"]:
-    //     break;
-    //   case keysPressed["q"]:
-    //     gameBoard.pieceRotateLeft();
-    //     break;
-    //   case keysPressed["w"]:
-    //     gameBoard.pieceRotateRight();
-    //     break;
-    // }
-
     timeoutId = setTimeout(callbackLoop, delay);
   };
+
   const callbackLoop = () => {
     const linesClearedHtml = document.getElementById("clears");
     const levelHtml = document.getElementById("levels");
@@ -76,34 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!gameBoard.freeSpaceDown()) {
       gameBoard.piecePlace();
     }
-
     gameBoard.pieceMoveDown();
-    console.log(!gameBoard.gameEnd);
-    console.log(animationId);
-    console.log(timeoutId);
     if (!gameBoard.gameEnd) {
       animationId = requestAnimationFrame(animate);
-    } else cancelAnimationFrame(animationId);
+    } else {
+      stopTimer();
+      cancelAnimationFrame(animationId);
+    }
   };
 
   let count = 0;
-  // Event listener for keyboard events
-  // document.addEventListener("keyup", (event) => {
-  //   if (event.code === "ArrowDown") {
-  //     event.preventDefault();
-  //     multiplier = 1;
-  //   }
-  // });
-  document.addEventListener("keyup", (event) => {
-    if (event.code === "q") {
-      event.preventDefault();
-      keysPressed["q"] = false;
-    }
-    if (event.code === "w") {
-      event.preventDefault();
-      keysPressed["w"] = false;
-    }
-  });
   document.addEventListener("keydown", (event) => {
     if (!gameBoard.gameEnd) {
       if (event.key === "q") {
@@ -118,10 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (event.key === "ArrowDown") {
         event.preventDefault();
+
         if (!gameBoard.freeSpaceDown()) {
           gameBoard.piecePlace();
         }
         if (animationId == 0) {
+          startTimer();
           gameBoard.gameEnd = false;
           animationId = requestAnimationFrame(animate);
         } else {
