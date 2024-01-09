@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let animationId = 0;
   let timeoutId = 0;
   const animate = (timeStamp) => {
-    // handleVisibilityChange();
     timeoutId = setTimeout(callbackLoop, delay);
   };
 
@@ -79,23 +78,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // function handleVisibilityChange() {
-  //   if (animationId != 0) {
-  //     return;
-  //   }
-  //   if (document.hidden) {
-  //     pauseTime();
-  //     cancelAnimationFrame(animationId);
-  //     animationId = 0;
-  //   } else {
-  //     // Page is visible, resume animations
-
-  //     unPauseTime();
-  //     requestAnimationFrame(animate);
-  //     clearTimeout(timeoutId);
-  //   }
-  // }
-  // document.addEventListener("visibilitychange", handleVisibilityChange);
+  function handleVisibilityChange() {
+    if (!gameBoard.gameStart) {
+      console.log("returned");
+      console.log("!gameBoard.gameStart", !gameBoard.gameStart);
+      return;
+    }
+    console.log("didn't return");
+    if (document.hidden) {
+      pauseTime();
+      cancelAnimationFrame(animationId);
+      clearTimeout(timeoutId);
+      animationId = 0;
+    } else {
+      // Page is visible, resume animations
+      unPauseTime();
+      animationId = requestAnimationFrame(animate);
+    }
+  }
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 
   let count = 0;
   document.addEventListener("keydown", (event) => {
@@ -118,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (animationId == 0) {
           startTimer();
+          gameBoard.gameStart = true;
           gameBoard.gameEnd = false;
           animationId = requestAnimationFrame(animate);
         } else {

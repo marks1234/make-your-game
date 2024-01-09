@@ -66,7 +66,7 @@ export default class GameBoard {
   }
 
   pieceRotateRight() {
-    console.log(this.piece);
+    // console.log(this.piece);
     if (this.pieceType == "o") return;
     const undoStateRight = () => {
       this.piece = this.pieceLastRotation;
@@ -644,7 +644,9 @@ export default class GameBoard {
       this.piece = pieceLocations;
     }
     if (this.#pieceCheckCollisionPiece()) {
-      console.log("two pieces printed at a time");
+      // console.log("two pieces printed at a time");
+      // This is the end condition...
+      // when two pieces are drawn at the same time
       this.gameEnd = true;
       this.gameStart = false;
       return;
