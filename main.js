@@ -1,6 +1,12 @@
 import GameBoard from "./gameBoard.js";
 import * as boardSettings from "./boardSettings.js";
-import { startTimer, stopTimer, ELAPSEDTIME } from "./timer.js";
+import {
+  startTimer,
+  stopTimer,
+  ELAPSEDTIME,
+  pauseTime,
+  unPauseTime,
+} from "./timer.js";
 
 console.log("updated");
 
@@ -51,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let animationId = 0;
   let timeoutId = 0;
   const animate = (timeStamp) => {
+    // handleVisibilityChange();
     timeoutId = setTimeout(callbackLoop, delay);
   };
 
@@ -71,6 +78,24 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelAnimationFrame(animationId);
     }
   };
+
+  // function handleVisibilityChange() {
+  //   if (animationId != 0) {
+  //     return;
+  //   }
+  //   if (document.hidden) {
+  //     pauseTime();
+  //     cancelAnimationFrame(animationId);
+  //     animationId = 0;
+  //   } else {
+  //     // Page is visible, resume animations
+
+  //     unPauseTime();
+  //     requestAnimationFrame(animate);
+  //     clearTimeout(timeoutId);
+  //   }
+  // }
+  // document.addEventListener("visibilitychange", handleVisibilityChange);
 
   let count = 0;
   document.addEventListener("keydown", (event) => {
@@ -111,18 +136,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       // CODE TO ENTER GOD MODE AND CHOOSE WHATEVER PIECE YOU WANT
       // const letters = ["O", "T", "I", "L", "J", "S", "Z"];
-      // if (event.key === "r") {
-      //   count++;
-      //   if (count > letters.length - 1) count = 0;
-      //   event.preventDefault();
-      //   gameBoard.pieceReplace(letters[count]);
-      // }
-      // if (event.key === "f") {
-      //   count--;
-      //   if (count < 0) count = letters.length - 1;
-      //   event.preventDefault();
-      //   gameBoard.pieceReplace(letters[count]);
-      // }
+      if (event.key === "r") {
+        pauseTime();
+        // count++;
+        // if (count > letters.length - 1) count = 0;
+        // event.preventDefault();
+        // gameBoard.pieceReplace(letters[count]);
+      }
+      if (event.key === "f") {
+        unPauseTime();
+        // count--;
+        // if (count < 0) count = letters.length - 1;
+        // event.preventDefault();
+        // gameBoard.pieceReplace(letters[count]);
+      }
     }
   });
 });

@@ -44,6 +44,7 @@ export default class GameBoard {
     this.pieceLastRotation = {};
     this.pieceRotation = 0;
     this.gameEnd = false;
+    this.gameStart = false;
 
     this.linesCleared = 0;
     this.level = 1;
@@ -639,6 +640,7 @@ export default class GameBoard {
     if (this.#pieceCheckCollisionPiece()) {
       console.log("two pieces printed at a time");
       this.gameEnd = true;
+      this.gameStart = false;
       return;
     }
 
