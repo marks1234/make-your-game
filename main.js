@@ -109,6 +109,14 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         gameBoard.pieceMoveRight();
       }
+      if (event.key === " ") {
+        if (animationId == 0) {
+          return;
+        }
+        event.preventDefault();
+        gameBoard.pieceDrop();
+        gameBoard.pieceMoveDown();
+      }
       // CODE TO ENTER GOD MODE AND CHOOSE WHATEVER PIECE YOU WANT
       // const letters = ["O", "T", "I", "L", "J", "S", "Z"];
       // if (event.key === "r") {
