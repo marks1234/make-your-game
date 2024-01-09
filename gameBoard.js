@@ -432,6 +432,12 @@ export default class GameBoard {
     this.pieceDraw();
   }
 
+  pieceDrop() {
+    this.pieceErase();
+    while (this.freeSpaceDown()) this.#hiddenMoveDown();
+    this.piecePlace();
+  }
+
   #hiddenMoveDown() {
     if (!isEmpty(this.piece)) {
       const pieceStore = {};
