@@ -143,20 +143,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       // CODE TO ENTER GOD MODE AND CHOOSE WHATEVER PIECE YOU WANT
       // const letters = ["O", "T", "I", "L", "J", "S", "Z"];
-      if (event.key === "r") {
-        pauseTime();
-        // count++;
-        // if (count > letters.length - 1) count = 0;
-        // event.preventDefault();
-        // gameBoard.pieceReplace(letters[count]);
-      }
-      if (event.key === "f") {
-        unPauseTime();
-        // count--;
-        // if (count < 0) count = letters.length - 1;
-        // event.preventDefault();
-        // gameBoard.pieceReplace(letters[count]);
-      }
+      // if (event.key === "r") {
+      // pauseTime();
+      // count++;
+      // if (count > letters.length - 1) count = 0;
+      // event.preventDefault();
+      // gameBoard.pieceReplace(letters[count]);
+      // }
+      // if (event.key === "f") {
+      // unPauseTime();
+      // count--;
+      // if (count < 0) count = letters.length - 1;
+      // event.preventDefault();
+      // gameBoard.pieceReplace(letters[count]);
+      // }
     }
   });
 });
