@@ -5,6 +5,7 @@ import {
   wallKickDataR,
 } from "./rotationMatrices.js";
 
+import { stopTimer } from "./timer.js";
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
@@ -639,11 +640,21 @@ export default class GameBoard {
   }
 
   #showGameEndScreen() {
-    // const gameBoard2 = document.getElementById("gameboard");
+    stopTimer();
     const gameEnd = document.getElementById("game-end");
-    // gameBoard2.style.display = "none";
     gameEnd.style.display = "flex";
     gameEnd.style.position = "absolute";
+  }
+
+  pause() {
+    const pause = document.getElementById("pause");
+    pause.style.display = "flex";
+    pause.style.position = "absolute";
+  }
+
+  unpause() {
+    const pause = document.getElementById("pause");
+    pause.style.display = "none";
   }
 
   pieceDraw(nameOfPiece) {

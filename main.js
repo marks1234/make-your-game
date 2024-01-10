@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ArrowLeft: false,
     q: false,
     w: false,
+    Escape: false,
   };
 
   let multiplier = 1;
@@ -78,22 +79,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  function pause() {
+    pauseTime();
+    cancelAnimationFrame(animationId);
+    clearTimeout(timeoutId);
+    animationId = 0;
+  }
+
+  function unpause() {
+    unPauseTime();
+    animationId = requestAnimationFrame(animate);
+  }
+
   function handleVisibilityChange() {
     if (!gameBoard.gameStart) {
       return;
     }
     console.log("didn't return");
     if (document.hidden) {
-      pauseTime();
-      cancelAnimationFrame(animationId);
-      clearTimeout(timeoutId);
-      animationId = 0;
+      pause();
     } else {
-      unPauseTime();
-      animationId = requestAnimationFrame(animate);
+      unpause();
     }
   }
   document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  const resume = document.getElementById("resume");
+  resume.onclick = () => {
+    gameBoard.unpause();
+    keysPressed["Escape"] = false;
+
+    unpause();
+  };
 
   let count = 0;
   document.addEventListener("keydown", (event) => {
@@ -108,6 +125,22 @@ document.addEventListener("DOMContentLoaded", () => {
         keysPressed["w"] = true;
         gameBoard.pieceRotateRight();
       }
+
+      //ugly
+      if (event.key == "Escape" && !keysPressed["Escape"]) {
+        event.preventDefault();
+        keysPressed["Escape"] = true;
+        gameBoard.pause();
+
+        pause();
+      } else if (event.key == "Escape") {
+        event.preventDefault();
+        keysPressed["Escape"] = false;
+        gameBoard.unpause();
+
+        unpause();
+      }
+
       if (event.key === "ArrowDown") {
         event.preventDefault();
 
