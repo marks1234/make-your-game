@@ -8,7 +8,7 @@ const port = 8000;
 async function readFileIfExists(path) {
   if (path == "./") {
     // Check if the path exists
-    const data = await fs.readFile("main.html", "utf8"); // Read the file
+    const data = await fs.readFile("index.html", "utf8"); // Read the file
     return data;
   }
   try {
